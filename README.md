@@ -1,4 +1,5 @@
 **Description:**
+
 Python script for building and training a face mask detection model using TensorFlow and MobileNetV2. Here's a breakdown of what the code does:
 
 **Importing Libraries and Modules:** The script starts by importing various Python libraries and modules, including TensorFlow, scikit-learn, and others. These libraries are used for tasks like data preprocessing, model creation, and evaluation.
