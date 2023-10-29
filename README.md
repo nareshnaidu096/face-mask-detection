@@ -1,34 +1,30 @@
-**Description:**
+This Python script is a real-time face mask detection system that uses a pre-trained face detector and a trained face mask classifier to identify whether individuals in a video stream are wearing face masks or not. Below is a detailed description of the script:
 
-Python script for building and training a face mask detection model using TensorFlow and MobileNetV2. Here's a breakdown of what the code does:
+**Importing Libraries:** The script begins by importing necessary libraries and modules, including TensorFlow for deep learning, OpenCV for computer vision tasks, and several others for audio and speech processing.
 
-**Importing Libraries and Modules:** The script starts by importing various Python libraries and modules, including TensorFlow, scikit-learn, and others. These libraries are used for tasks like data preprocessing, model creation, and evaluation.
+**Function for Detecting and Predicting Masks:** The detect_and_predict_mask function takes a frame, a pre-trained face detector model (faceNet), and a trained face mask classifier model (maskNet).
+It processes the input frame for face detection and mask prediction.
+The function returns a tuple containing face locations and corresponding mask predictions.
+**Loading Pre-Trained Models:** It loads a pre-trained face detector model using the "deploy.prototxt" and "res10_300x300_ssd_iter_140000.caffemodel" files. The face detector is based on a Single Shot MultiBox Detector (SSD) architecture and can detect faces in images.
 
-**Configuration Parameters:** It sets some configuration parameters, such as the initial learning rate (INIT_LR), the number of training epochs (EPOCHS), and the batch size (BS).
+**Loading Face Mask Detector Model:** It loads the previously trained face mask detection model from the "mask_detector.model" file.
 
-**Dataset Directory and Categories:** The script specifies the directory where the dataset is located (DIRECTORY) and defines the categories of images, in this case, "with_mask" and "without_mask."
+**Initializing Video Stream:** The code initializes the video stream using the VideoStream class from the imutils library and starts capturing video frames from the default camera source (camera index 0).
 
-**Loading Images:** It loads and preprocesses the images from the dataset directory. The code goes through each category, reads images, resizes them to (224, 224) pixels, and preprocesses them for the MobileNetV2 model. It stores the images and their corresponding labels (with or without mask) in the data and labels lists.
+**Frame Processing Loop:** The main loop continuously captures and processes frames from the video stream.
 
-**One-Hot Encoding Labels:** It performs one-hot encoding on the labels to convert them into a binary format (0s and 1s).
+**Face Detection and Mask Prediction:**
 
-**Data Splitting:** The dataset is split into training and testing sets using the train_test_split function from scikit-learn. The training set comprises 80% of the data.
+The detect_and_predict_mask function is called to detect faces and predict mask wearing in the video frame.
+The detected faces' locations and mask predictions are obtained.
+**Drawing Bounding Boxes and Labels:** The script loops over the detected faces, draws bounding boxes around them, and labels them as "Mask" or "No Mask" based on the model's predictions. The color of the bounding box and label text depends on whether the person is wearing a mask or not.
 
-**Data Augmentation:** It uses the ImageDataGenerator from TensorFlow to apply data augmentation techniques to the training data. Data augmentation helps increase the diversity of the training dataset by applying transformations like rotation, zoom, and shifts.
+**Text-to-Speech Output:**
 
-**Model Architecture:** The script loads the MobileNetV2 model with pre-trained weights, removes the top (classification) layers of the MobileNetV2 model, and constructs a new head for classification. The head consists of average pooling, flattening, and two dense layers.
+The result (**"Mask" or "No Mask"**) is converted to human-readable text.
+A text-to-speech message is generated using the Google Text-to-Speech (gTTS) library, and it is saved as an audio file named "voiceX.mp3," where X is an incrementing counter.
+**Audio Playback:** The generated audio message is played using the playsound library. The message informs individuals whether they are wearing a mask or should wear one.
 
-**Freezing Base Layers:** It freezes the layers of the base model (MobileNetV2) to prevent them from being updated during the initial training.
+**User Interaction and Exit:** The script monitors user input. If the "q" key is pressed, the program exits the loop and performs cleanup tasks, including closing the video stream and destroying any open windows.
 
-**Model Compilation:** The model is compiled using the Adam optimizer and binary cross-entropy loss.
-
-**Model Training:** The script trains the model using the training data and validation data. It stores the training history in the variable H.
-
-**Model Evaluation:** It evaluates the model's performance on the test set and prints a classification report.
-
-**Saving the Model:** The trained model is saved to a file named "mask_detector.model."
-
-**Plotting Training Metrics:** The script creates a plot of the training and validation loss and accuracy over epochs and saves it as "plot.png."
-This code is a complete pipeline for building and training a face mask detection model. To run it, you would need to have the required Python libraries installed and provide the dataset in the specified directory.
- 
-
+This script combines computer vision with audio feedback to create a real-time face mask detection system that can provide immediate guidance to individuals based on their mask-wearing behavior in a video stream. It can be used in various settings to encourage mask usage.
